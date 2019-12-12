@@ -3,10 +3,7 @@ package demo;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.textract.TextractClient;
-import software.amazon.awssdk.services.textract.model.AnalyzeDocumentRequest;
-import software.amazon.awssdk.services.textract.model.AnalyzeDocumentResponse;
-import software.amazon.awssdk.services.textract.model.Document;
-import software.amazon.awssdk.services.textract.model.S3Object;
+import software.amazon.awssdk.services.textract.model.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,15 +18,14 @@ public class Main {
 
         TextractClient client = TextractClient.builder().region(Region.EU_WEST_1).build();
 
-        AnalyzeDocumentRequest request = null;
+        DetectDocumentTextRequest request = null;
         try {
-            request = AnalyzeDocumentRequest.builder()
-                    .featureTypesWithStrings("TABLES", "FORMS")
+            request = DetectDocumentTextRequest.builder()
                     .document(Document.builder().bytes(SdkBytes.fromByteArray(Files.readAllBytes(fileLocation))).build()).build();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        AnalyzeDocumentResponse response = client.analyzeDocument(request);
+        DetectDocumentTextResponse response = client.detectDocumentText(request);
 
 
         System.out.println("Put breakpoint here to analyze response data.");
